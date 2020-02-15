@@ -8,7 +8,7 @@ export class PostsService {
       return [
         {
           id: filters.authorId,
-          title: `Post made by ${filters.authorId}`,
+          title: `Post made by ${filters.authorId}. Stage ${process.env.STAGE}`,
           votes: 10
         }
       ];
