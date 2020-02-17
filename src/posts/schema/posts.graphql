@@ -1,0 +1,18 @@
+scalar Date
+
+type Post {
+  id: ID!
+  title: String!
+  votes: Int!
+  author: Author!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input PostInput {
+  title: String!
+}
+
+type Mutation {
+  createPost(authorId: ID!, input: PostInput!): Post!
+}
