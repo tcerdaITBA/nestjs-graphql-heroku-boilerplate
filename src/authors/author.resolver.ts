@@ -3,27 +3,36 @@ import {
   ResolveProperty,
   Query,
   Args,
-  Parent
+  Parent,
+  Mutation
 } from '@nestjs/graphql';
 import { AuthorService } from './author.service';
-import { Author, Post } from 'src/graphql';
+import { Post, AuthorInput, PaginationInput } from 'src/graphql';
 import { PostsService } from 'src/posts/posts.service';
+import { AuthorDoc } from './interface/author.interface';
 
 @Resolver('Author')
 export class AuthorResolver {
   constructor(
-    private readonly authorService: AuthorService,
-    private readonly postsService: PostsService
+    private readonly postsService: PostsService,
+    private readonly authorService: AuthorService
   ) {}
 
-  @Query('author')
-  findAuthor(@Args('id') id: number): Author {
+  @Query()
+  author(@Args('id') id: string): Promise<AuthorDoc> {
     return this.authorService.findById(id);
   }
 
-  @ResolveProperty('posts')
-  findPosts(@Parent() author: Author): [Post] {
-    const { id } = author;
-    return this.postsService.findAll({ authorId: id });
+  @Mutation()
+  createAuthor(@Args('input') authorInput: AuthorInput) {
+    return this.authorService.createAuthor(authorInput);
+  }
+
+  @ResolveProperty()
+  posts(
+    @Args('page') page: PaginationInput,
+    @Parent() author: AuthorDoc
+  ): Promise<Post[]> {
+    return this.postsService.findAll({ authorId: author.id }, page);
   }
 }

@@ -1,0 +1,8 @@
+{
+  "addons": ["mongolab:sandbox"],
+  "environments": {
+    "review": {
+      "addons": ["mongolab:sandbox"]
+    }
+  }
+}
