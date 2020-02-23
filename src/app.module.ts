@@ -14,7 +14,7 @@ import { PostsModule } from './posts/posts.module';
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
+        path: join(process.cwd(), 'src/shared/graphql.ts'),
         outputAs: 'class'
       }
     }),

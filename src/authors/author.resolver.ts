@@ -7,9 +7,11 @@ import {
   Mutation
 } from '@nestjs/graphql';
 import { AuthorService } from './author.service';
-import { Post, AuthorInput, PaginationInput } from 'src/graphql';
+import { Post } from 'src/shared/graphql';
 import { PostsService } from 'src/posts/posts.service';
+import { PaginationInputDto } from 'src/shared/dto/pagination.dto';
 import { AuthorDoc } from './interface/author.interface';
+import { AuthorInputDto } from './dto/author.dto';
 
 @Resolver('Author')
 export class AuthorResolver {
@@ -24,13 +26,13 @@ export class AuthorResolver {
   }
 
   @Mutation()
-  createAuthor(@Args('input') authorInput: AuthorInput) {
+  createAuthor(@Args('input') authorInput: AuthorInputDto) {
     return this.authorService.createAuthor(authorInput);
   }
 
   @ResolveProperty()
   posts(
-    @Args('page') page: PaginationInput,
+    @Args('page') page: PaginationInputDto,
     @Parent() author: AuthorDoc
   ): Promise<Post[]> {
     return this.postsService.findAll({ authorId: author.id }, page);

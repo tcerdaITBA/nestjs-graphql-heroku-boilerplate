@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Post, PaginationInput, PostInput } from 'src/graphql';
+import { Post, PaginationInput, PostInput } from 'src/shared/graphql';
 import { PostDoc } from './interface/posts.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';

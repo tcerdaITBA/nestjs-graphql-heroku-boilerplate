@@ -6,9 +6,10 @@ import {
   Args
 } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
-import { PostInput, Author } from 'src/graphql';
+import { Author } from 'src/shared/graphql';
 import { PostDoc } from './interface/posts.interface';
 import { AuthorService } from 'src/authors/author.service';
+import { PostInputDto } from './dto/posts.dto';
 
 @Resolver('Post')
 export class PostsResolver {
@@ -20,7 +21,7 @@ export class PostsResolver {
   @Mutation()
   createPost(
     @Args('authorId') authorId: string,
-    @Args('input') input: PostInput
+    @Args('input') input: PostInputDto
   ): Promise<PostDoc> {
     return this.postsService.create(authorId, input);
   }
