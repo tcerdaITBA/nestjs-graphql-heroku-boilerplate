@@ -26,7 +26,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository. Boilerplate for developing GraphQL applications with a MongoDB database deployed to Heroku.
 
 ## Installation
 
