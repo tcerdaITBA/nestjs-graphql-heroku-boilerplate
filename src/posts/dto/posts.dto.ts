@@ -1,4 +1,4 @@
-import { PostInput } from 'src/shared/graphql';
+import { PostInput } from 'src/common/graphql';
 import { Length } from 'class-validator';
 
 export class PostInputDto extends PostInput {

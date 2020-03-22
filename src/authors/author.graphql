@@ -5,7 +5,6 @@ type Author {
   firstName: String!
   lastName: String!
   fullName: String!
-  posts(page: PaginationInput = {}): [Post!]!
   createdAt: Date!
   updatedAt: Date!
 }

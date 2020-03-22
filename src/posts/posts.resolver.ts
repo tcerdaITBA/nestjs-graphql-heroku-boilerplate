@@ -1,10 +1,11 @@
-import { Resolver, Mutation, Parent, ResolveProperty, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Parent, Args, ResolveField } from '@nestjs/graphql';
 import { PostsService } from './posts.service';
-import { Author } from 'src/shared/graphql';
+import { Author, Post } from 'src/common/graphql';
 import { PostDoc } from './interface/posts.interface';
 import { AuthorService } from 'src/authors/author.service';
 import { PostInputDto } from './dto/posts.dto';
-import { MyLogger } from 'src/shared/logger/my-logger.service';
+import { MyLogger } from 'src/common/logger/my-logger.service';
+import { PaginationInputDto } from 'src/common/dto/pagination.dto';
 
 @Resolver('Post')
 export class PostsResolver {
@@ -13,7 +14,7 @@ export class PostsResolver {
     private readonly postsService: PostsService,
     private readonly logger: MyLogger
   ) {
-    logger.setContext('PostsResolver');
+    logger.setContext(PostsResolver.name);
   }
 
   @Mutation()
@@ -28,8 +29,18 @@ export class PostsResolver {
     return createdPost;
   }
 
-  @ResolveProperty()
+  @ResolveField()
   author(@Parent() postDoc: PostDoc): Promise<Author> {
     return this.authorService.findById(postDoc.authorId);
+  }
+}
+
+@Resolver('Author')
+export class PostsAuthorResolver {
+  constructor(private readonly postsService: PostsService) {}
+
+  @ResolveField()
+  posts(@Parent() author: Author, @Args('page') page: PaginationInputDto): Promise<Post[]> {
+    return this.postsService.findAll({ authorId: author.id }, page);
   }
 }

@@ -9,6 +9,10 @@ type Post {
   updatedAt: Date!
 }
 
+extend type Author {
+  posts(page: PaginationInput = {}): [Post!]!
+}
+
 input PostInput {
   title: String!
 }

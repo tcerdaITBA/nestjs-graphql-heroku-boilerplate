@@ -1,16 +1,19 @@
+import { Plugin } from '@nestjs/graphql';
 import { randomBytes } from 'crypto';
 import { MyLogger } from './my-logger.service';
-import { GraphQLRequestContext } from 'apollo-server-types';
+import {
+  ApolloServerPlugin,
+  GraphQLRequestContext,
+  GraphQLRequestListener,
+} from 'apollo-server-plugin-base';
 
-export class MyLoggerPlugin {
-  private readonly logger: MyLogger;
-
-  constructor() {
-    this.logger = new MyLogger();
+@Plugin()
+export class MyLoggerPlugin implements ApolloServerPlugin {
+  constructor(private readonly logger: MyLogger) {
     this.logger.setContext('MyLoggerPlugin');
   }
 
-  requestDidStart({ request }: GraphQLRequestContext) {
+  requestDidStart({ request }: GraphQLRequestContext): GraphQLRequestListener {
     // filter introspection queries
     if (request.operationName === 'IntrospectionQuery') {
       return {};
@@ -42,7 +45,7 @@ export class MyLoggerPlugin {
             `<<< err ${id} [op=${operation.operation}] [name=${operationName}]\n${jsonErrors}`
           );
         }
-      }
+      },
     };
   }
 }

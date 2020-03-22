@@ -1,5 +1,5 @@
 import { Length } from 'class-validator';
-import { AuthorInput } from 'src/shared/graphql';
+import { AuthorInput } from 'src/common/graphql';
 
 export class AuthorInputDto extends AuthorInput {
   @Length(3, 64)

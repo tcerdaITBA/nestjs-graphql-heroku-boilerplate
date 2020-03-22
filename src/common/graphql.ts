@@ -5,6 +5,7 @@
  */
 
 /* tslint:disable */
+/* eslint-disable */
 export class AuthorInput {
     firstName: string;
     lastName: string;
@@ -24,9 +25,9 @@ export class Author {
     firstName: string;
     lastName: string;
     fullName: string;
-    posts: Post[];
     createdAt: Date;
     updatedAt: Date;
+    posts: Post[];
 }
 
 export abstract class IMutation {
