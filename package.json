@@ -1,9 +1,13 @@
 {
-  "name": "api",
+  "name": "nestjs-graphql-heroku-boilerplate",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Nest js boilerplate with graphql and mongodb integrated with heroku",
+  "author": "Tomás Cerdá ",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tcerdaITBA/nestjs-graphql-heroku-boilerplate"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -52,6 +56,7 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.1",
     "jest": "^25.1.0",
+    "mongodb-memory-server": "^6.4.1",
     "prettier": "^2.0.1",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
@@ -70,6 +75,9 @@
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "src/(.*)": "<rootDir>/$1"
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

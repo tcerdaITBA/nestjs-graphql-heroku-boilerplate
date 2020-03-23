@@ -9,7 +9,7 @@ export class PostsService {
   constructor(@InjectModel('Post') private readonly postsModel: Model<PostDoc>) {}
 
   async findAll(filters: PostsFilters, { limit, offset }: PaginationInput): Promise<Post[]> {
-    return await this.postsModel.find({ authorId: filters.authorId }).limit(limit).skip(offset);
+    return await this.postsModel.find(filters).limit(limit).skip(offset);
   }
 
   create(authorId: string, input: PostInput): Promise<PostDoc> {

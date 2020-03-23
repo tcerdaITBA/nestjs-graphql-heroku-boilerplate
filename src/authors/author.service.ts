@@ -12,7 +12,7 @@ export class AuthorService {
     return this.authorModel.findById(id);
   }
 
-  async createAuthor({ firstName, lastName }: AuthorInput): Promise<AuthorDoc> {
+  async create({ firstName, lastName }: AuthorInput): Promise<AuthorDoc> {
     return this.authorModel.create({ firstName, lastName });
   }
 }
