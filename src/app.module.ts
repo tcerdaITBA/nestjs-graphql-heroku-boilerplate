@@ -3,18 +3,14 @@ import { join } from 'path';
 import { AuthorModule } from './authors/author.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { DateScalar } from './common/scalars/date.scalar';
 import { PostsModule } from './posts/posts.module';
 import { LoggerModule } from './common/logger/my-logger.module';
+import { DatabaseModule } from './common/database/database.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }),
     GraphQLModule.forRoot({
       typePaths: ['./**/*.graphql'],
       definitions: {
@@ -22,6 +18,7 @@ import { LoggerModule } from './common/logger/my-logger.module';
         outputAs: 'class',
       },
     }),
+    DatabaseModule,
     AuthorModule,
     PostsModule,
     LoggerModule,

@@ -3,7 +3,7 @@ import { PostDoc } from '../interface/posts.interface';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { PostsSchema } from '../schema/posts.schema';
-import { TestDatabaseModule, closeConnection } from 'src/common/test/test-db';
+import { DatabaseModule } from 'src/common/database/database.module';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 
 describe('PostsService', () => {
@@ -13,10 +13,7 @@ describe('PostsService', () => {
 
   beforeAll(async () => {
     moduleRef = await Test.createTestingModule({
-      imports: [
-        TestDatabaseModule,
-        MongooseModule.forFeature([{ name: 'Post', schema: PostsSchema }]),
-      ],
+      imports: [DatabaseModule, MongooseModule.forFeature([{ name: 'Post', schema: PostsSchema }])],
       providers: [PostsService],
     }).compile();
 
@@ -30,7 +27,6 @@ describe('PostsService', () => {
 
   afterAll(async () => {
     await moduleRef.close();
-    await closeConnection();
   });
 
   describe('create', () => {
@@ -66,22 +62,6 @@ describe('PostsService', () => {
       ]);
     });
 
-    it('should return all posts with empty filters', async () => {
-      expect(await postsService.findAll({}, { limit: 20, offset: 0 })).toHaveLength(3);
-    });
-
-    it('should return no more posts than the limit number', async () => {
-      expect(await postsService.findAll({}, { limit: 2, offset: 0 })).toHaveLength(2);
-    });
-
-    it('should skip posts given an offset', async () => {
-      expect(await postsService.findAll({}, { limit: 2, offset: 2 })).toHaveLength(1);
-    });
-
-    it('should return no posts if offset is higher or equal than total number of posts', async () => {
-      expect(await postsService.findAll({}, { limit: 2, offset: 3 })).toHaveLength(0);
-    });
-
     it('should filter by author id', async () => {
       const posts = await postsService.findAll(
         { authorId: '5e790e3d3a854bc61909e6d7' },
@@ -101,6 +81,22 @@ describe('PostsService', () => {
           }),
         ])
       );
+    });
+
+    it('should return all posts given empty filters', async () => {
+      expect(await postsService.findAll({}, { limit: 20, offset: 0 })).toHaveLength(3);
+    });
+
+    it('should return no more posts than the limit number', async () => {
+      expect(await postsService.findAll({}, { limit: 2, offset: 0 })).toHaveLength(2);
+    });
+
+    it('should skip posts given an offset', async () => {
+      expect(await postsService.findAll({}, { limit: 2, offset: 2 })).toHaveLength(1);
+    });
+
+    it('should return no posts if offset is higher or equal than total number of posts', async () => {
+      expect(await postsService.findAll({}, { limit: 2, offset: 3 })).toHaveLength(0);
     });
   });
 });

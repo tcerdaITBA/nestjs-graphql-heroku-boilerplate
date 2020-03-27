@@ -3,7 +3,7 @@ import { AuthorService } from '../author.service';
 import { AuthorDoc } from '../interface/author.interface';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { AuthorSchema } from '../schema/author.schema';
-import { TestDatabaseModule, closeConnection } from 'src/common/test/test-db';
+import { DatabaseModule } from 'src/common/database/database.module';
 import { Model } from 'mongoose';
 
 describe('AuthorService', () => {
@@ -14,7 +14,7 @@ describe('AuthorService', () => {
   beforeAll(async () => {
     moduleRef = await Test.createTestingModule({
       imports: [
-        TestDatabaseModule,
+        DatabaseModule,
         MongooseModule.forFeature([{ name: 'Author', schema: AuthorSchema }]),
       ],
       providers: [AuthorService],
@@ -30,7 +30,6 @@ describe('AuthorService', () => {
 
   afterAll(async () => {
     await moduleRef.close();
-    await closeConnection();
   });
 
   describe('findById', () => {
