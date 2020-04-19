@@ -21,15 +21,18 @@ export class MyLoggerPlugin implements ApolloServerPlugin {
 
     const logger = this.logger;
     const id = randomBytes(16).toString('hex');
+    let operationResolved = false;
 
     return {
       didResolveOperation({ request, operation, operationName }: GraphQLRequestContext) {
+        operationResolved = true;
+
         logger.log(
           `>>> req ${id} [op=${operation.operation}] [name=${operationName}]\n${request.query}`
         );
       },
 
-      willSendResponse({ response, operation, operationName }: GraphQLRequestContext) {
+      willSendResponse({ source, response, operation, operationName }: GraphQLRequestContext) {
         const { data, errors } = response;
 
         if (data) {
@@ -40,9 +43,15 @@ export class MyLoggerPlugin implements ApolloServerPlugin {
         }
 
         if (errors) {
+          if (!operationResolved) {
+            logger.log(`>>> req ${id} [op=undefined] [name=undefined]\n${source}`);
+          }
+
           const jsonErrors = JSON.stringify(errors);
           logger.warn(
-            `<<< err ${id} [op=${operation.operation}] [name=${operationName}]\n${jsonErrors}`
+            `<<< err ${id} [op=${
+              operation ? operation.operation : 'undefined'
+            }] [name=${operationName}]\n${jsonErrors}`
           );
         }
       },
